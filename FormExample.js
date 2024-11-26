@@ -20,6 +20,8 @@ const validationSchema = Yup.object({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
     .required('Confirm Password is required'),
+  address: Yup.string()
+    .required('Address is required'),
 });
 
 const FormExample = () => {
@@ -33,6 +35,8 @@ const FormExample = () => {
           phone: '',
           password: '',
           confirmPassword: '',
+          address: '',
+          termsAccepted: '',
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
@@ -91,17 +95,28 @@ const FormExample = () => {
            </View>
 
             <View testID='formConfirmPassword'>
-            <Text style={styles.label}>Confirm Password</Text>
-            <TextInput
-              style={styles.input}
-              secureTextEntry
-              onChangeText={handleChange('confirmPassword')}
-              onBlur={handleBlur('confirmPassword')}
-              value={values.confirmPassword}
-            />
-            {touched.confirmPassword && errors.confirmPassword && (
-              <Text style={styles.error}>{errors.confirmPassword}</Text>
-            )}
+              <Text style={styles.label}>Confirm Password</Text>
+              <TextInput
+                style={styles.input}
+                secureTextEntry
+                onChangeText={handleChange('confirmPassword')}
+                onBlur={handleBlur('confirmPassword')}
+                value={values.confirmPassword}
+              />
+              {touched.confirmPassword && errors.confirmPassword && (
+                <Text style={styles.error}>{errors.confirmPassword}</Text>
+              )}
+            </View>
+            <View testID='formAddress'>
+              <Text style={styles.label}>Address</Text>
+              <TextInput
+                style={styles.input}
+                onChangeText={handleChange('address')}
+                onBlur={handleBlur('address')}
+                value={values.address}
+                />
+                {touched.address && errors.address && <Text style={styles.error}>{errors.address}</Text>}
+
             </View>
 
             <Button onPress={handleSubmit} title="Submit" color="#007BFF" />
