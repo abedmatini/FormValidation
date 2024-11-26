@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { CheckBox } from 'react-native-web';
 
 // Define validation schema using Yup
 const validationSchema = Yup.object({
@@ -22,6 +23,9 @@ const validationSchema = Yup.object({
     .required('Confirm Password is required'),
   address: Yup.string()
     .required('Address is required'),
+  termsAccepted: Yup.boolean()
+  .oneOf([true], 'You must accept the terms and conditions')
+  .required('You must accept the terms and conditions')
 });
 
 const FormExample = () => {
@@ -36,7 +40,7 @@ const FormExample = () => {
           password: '',
           confirmPassword: '',
           address: '',
-          termsAccepted: '',
+          termsAccepted: false,
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
@@ -116,9 +120,17 @@ const FormExample = () => {
                 value={values.address}
                 />
                 {touched.address && errors.address && <Text style={styles.error}>{errors.address}</Text>}
+            </View>
+            <View testID='formTermsAccepted'>
+              <CheckBox
+                  onChange={handleChange('termsAccepted')}
+                  value={values.termsAccepted}
+              ></CheckBox>
+                <Text style={styles.checkboxLabel}>I agree to the terms and conditions</Text>
+
+                {touched.termsAccepted && errors.termsAccepted && <Text style={styles.error}>{errors.termsAccepted}</Text>}
 
             </View>
-
             <Button onPress={handleSubmit} title="Submit" color="#007BFF" />
           </ScrollView>
         )}
@@ -161,6 +173,10 @@ const styles = StyleSheet.create({
     color: '#d9534f',
     fontSize: 14,
     marginBottom: 10,
+  },
+  checkboxLabel: {
+    marginLeft: 8,
+    fontSize: 16,
   },
 });
 
